@@ -10,7 +10,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+// app.use(express.json());
 
 /**
  * Route to user service
@@ -19,8 +19,8 @@ app.use(
   "/users",
   createProxyMiddleware({
     target: "http://localhost:4001",
-    changeOrigin: true
-  })
+    changeOrigin: true,
+  }),
 );
 
 /**
@@ -30,8 +30,8 @@ app.use(
   "/posts",
   createProxyMiddleware({
     target: "http://localhost:4002",
-    changeOrigin: true
-  })
+    changeOrigin: true,
+  }),
 );
 
 /**
@@ -41,8 +41,8 @@ app.use(
   "/votes",
   createProxyMiddleware({
     target: "http://localhost:4003",
-    changeOrigin: true
-  })
+    changeOrigin: true,
+  }),
 );
 
 app.listen(4000, () => {
