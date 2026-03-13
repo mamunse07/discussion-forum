@@ -45,6 +45,17 @@ app.use(
   }),
 );
 
+/**
+ * Route to feed service
+ */
+app.use(
+  "/feed",
+  createProxyMiddleware({
+    target: "http://localhost:4004",
+    changeOrigin: true
+  })
+);
+
 app.listen(4000, () => {
   console.log("API Gateway running on port 4000");
 });
