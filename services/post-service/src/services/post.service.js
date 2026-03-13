@@ -2,13 +2,26 @@
  * Business logic layer
  */
 
+const { getChannel } =
+require("../../../../shared/config/rabbitmq");
 const postRepository = require("../repositories/post.repository");
 
 class PostService {
 
   async createPost(data) {
 
-    return postRepository.createPost(data);
+    const post = await postRepository.createPost(data);
+
+    console.log({post})
+
+    const channel = getChannel();
+
+    channel.sendToQueue(
+      "post_created",
+      Buffer.from(JSON.stringify(post))
+    );
+    
+    return post;
 
   }
 

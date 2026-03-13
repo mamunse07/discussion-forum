@@ -1,5 +1,33 @@
 const axios = require("axios");
 
+const redis = require("../../../../shared/config/redis");
+
+async function getFeed() {
+
+  const cachedFeed = await redis.get("feed");
+
+  if (cachedFeed) {
+
+    console.log("Cache hit");
+
+    return JSON.parse(cachedFeed);
+
+  }
+
+  console.log("Cache miss");
+
+  const feed = await generateFeed();
+
+  await redis.set(
+    "feed",
+    JSON.stringify(feed),
+    { EX: 60 }
+  );
+
+  return feed;
+
+}
+
 function calculateScore(post) {
 
   const upvotes = post.upvotes || 0;
